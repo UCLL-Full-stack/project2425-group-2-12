@@ -1,33 +1,38 @@
+import { Role } from '../types';
+
 export class Profile {
     // private variable instances
     private id?: number; // id is optional (?)
-    private last_name: string;
-    private first_name: string;
+    private firstname: string;
+    private lastname: string;
+    private email: string;
     private street: string;
     private housenumber: number;
-    private gsm_number: string;
-    private postal_code: number;
-    private email: string;
+    private phonenumber: string;
+    private postalcode: number;
+    private role: Role;
 
     // constructor
     constructor(profile: {
         id?: number;
-        last_name: string;
-        first_name: string;
+        firstname: string;
+        lastname: string;
+        email: string;
         street: string;
         housenumber: number;
-        gsm_number: string;
-        postal_code: number;
-        email: string;
+        phonenumber: string;
+        postalcode: number;
+        role: Role;
     }) {
         this.id = profile.id;
-        this.last_name = profile.last_name;
-        this.first_name = profile.first_name;
+        this.firstname = profile.firstname;
+        this.lastname = profile.lastname;
+        this.email = profile.email;
         this.street = profile.street;
         this.housenumber = profile.housenumber;
-        this.gsm_number = profile.gsm_number;
-        this.postal_code = profile.postal_code;
-        this.email = profile.email;
+        this.phonenumber = profile.phonenumber;
+        this.postalcode = profile.postalcode;
+        this.role = profile.role;
     }
 
     // getters
@@ -35,31 +40,35 @@ export class Profile {
         return this.id;
     }
 
-    getLastName(): string {
-        return this.last_name;
+    getFirstName(): string {
+        return this.firstname;
     }
 
-    getFirstName(): string {
-        return this.first_name;
+    getLastName(): string {
+        return this.lastname;
+    }
+
+    getEmail(): string {
+        return this.email;
     }
 
     getStreet(): string {
         return this.street;
     }
 
-    getHousenumber(): number {
+    getHouseNumber(): number {
         return this.housenumber;
     }
 
-    getGsmNumber(): string {
-        return this.gsm_number;
+    getPhoneNumber(): string {
+        return this.phonenumber;
     }
 
     getPostalCode(): number {
-        return this.postal_code;
+        return this.postalcode;
     }
 
-    getEmail(): string {
-        return this.email;
+    getRole(): Role {
+        return this.role;
     }
 }
