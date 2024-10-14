@@ -20,11 +20,11 @@ export class User {
         return this.id;
     }
 
-    getLastName(): string {
+    getUsername(): string {
         return this.username;
     }
 
-    getFirstName(): string {
+    getPassword(): string {
         return this.password;
     }
 
