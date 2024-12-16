@@ -1,0 +1,29 @@
+{
+  "app.title": "Brol.com",
+  "general.error": "Er is een fout opgetreden. Probeer het later opnieuw.",
+  "general.unauthorized": "U bent niet gemachtigd om toegang te krijgen tot deze bron.",
+  "login": {
+    "title": "Inloggen",
+    "button": "Inloggen",
+    "success": "Inloggen gelukt. Doorverwijzen naar de startpagina...",
+    "validate": {
+      "name": "Naam is verplicht",
+      "password": "Wachtwoord is verplicht"
+    },
+    "label": { "username": "Gebruikersnaam:", "password": "Wachtwoord:" }
+  },
+  "header": {
+    "welcome": "Welkom",
+    "nav": {
+      "home": "Startpagina",
+      "lecturers": "Docenten",
+      "schedules": "Roosters",
+      "login": "Inloggen",
+      "logout": "Uitloggen"
+    }
+  },
+  "home": {
+    "addProductButton": "Product toevoegen",
+    "title": "Onze producten:"
+  }
+}
