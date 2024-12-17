@@ -18,43 +18,44 @@ const Header: React.FC = () => {
   const handleClick = () => {
     localStorage.removeItem("loggedInUser");
     setLoggedInUser(null);
+    window.location.reload();
   };
 
   return (
-    <header className="p-3 mb-3 border-bottom bg-gradient-to-br from-gray-900 to-gray-600 flex flex-col items-center">
-      <a className="flex mb-2 md:mb-5 text-white-50 text-3xl text-gray-300">
-        {t("app.title")}
-      </a>
-      <nav className="items-center flex md:flex-row flex-col">
-        <Link
-          href="/"
-          className="px-4 text-xl text-white hover:bg-gray-600 rounded-lg"
-        >
-          {t("header.nav.home")}
-        </Link>
-        {!loggedInUser && (
+    <header className="bg-blue-500 p-4">
+      <nav className="flex items-center justify-between">
+        <div className="text-white text-2xl font-bold">
+          <Link href="/">{t("app.title")}</Link>
+        </div>
+        <div className="flex items-center space-x-4">
           <Link
-            href="/login"
-            className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
+            href="/"
+            className="text-white text-xl hover:bg-blue-700 rounded-lg px-4 py-2"
           >
-            {t("header.nav.login")}
+            {t("header.nav.home")}
           </Link>
-        )}
-        {loggedInUser && (
-          <a
-            href="#"
-            onClick={handleClick}
-            className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
-          >
-            {t("header.nav.logout")}
-          </a>
-        )}
-        {loggedInUser && (
-          <div className="text-white ms-5 mt-2 md:mt-0 pt-1 md:pt-0 grow">
-            {t("header.welcome")}, {loggedInUser.fullname}!
-          </div>
-        )}
-        <Language />
+          {!loggedInUser && (
+            <Link
+              href="/login"
+              className="text-white text-xl hover:bg-blue-700 rounded-lg px-4 py-2"
+            >
+              {t("header.nav.login")}
+            </Link>
+          )}
+          {loggedInUser && (
+            <a
+              href="#"
+              onClick={handleClick}
+              className="text-white text-xl hover:bg-blue-700 rounded-lg px-4 py-2"
+            >
+              {t("header.nav.logout")}
+            </a>
+          )}
+          {loggedInUser && (
+            <div className="text-white text-xl">{loggedInUser.fullname}</div>
+          )}
+          <Language />
+        </div>
       </nav>
     </header>
   );

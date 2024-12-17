@@ -133,9 +133,17 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
     try {
         const userInput = <UserInput>req.body;
         const response = await userService.authenticate(userInput);
-        res.status(200).json({ message: 'Authentication succesful', ...response });
+        res.status(200).json({ message: 'Authentication successful', ...response });
     } catch (error) {
-        next(error);
+        if (error instanceof Error) {
+            if (error.message === 'Incorrect password.') {
+                res.status(401).json({ message: 'Invalid username or password' });
+            } else {
+                next(error);
+            }
+        } else {
+            next(new Error('An unknown error occurred'));
+        }
     }
 });
 
@@ -163,6 +171,49 @@ userRouter.post('/signup', async (req: Request, res: Response, next: NextFunctio
         const userInput = <UserInput>req.body;
         const user = await userService.createUser(userInput);
         res.status(200).json(user);
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   get:
+ *     summary: Get a user by ID
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The user ID
+ *     responses:
+ *       200:
+ *         description: A user object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 name:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *       404:
+ *         description: User not found
+ */
+userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = await userService.getUserById(Number(req.params.id));
+        if (user) {
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
     } catch (error) {
         next(error);
     }

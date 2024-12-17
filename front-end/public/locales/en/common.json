@@ -5,12 +5,16 @@
   "login": {
     "title": "Login",
     "button": "Login",
-    "success": "Login successful. Redirecting to homepage...",
+    "success": "Login successful.",
     "validate": {
       "name": "Name is required",
       "password": "Password is required"
     },
-    "label": { "username": "Username:", "password": "Password:" }
+    "label": { "username": "Username:", "password": "Password:" },
+    "error": {
+      "invalidCredentials": "Invalid credentials.",
+      "serverError": "An error occurred while trying to login. Please try again later."
+    }
   },
   "header": {
     "welcome": "Welcome",

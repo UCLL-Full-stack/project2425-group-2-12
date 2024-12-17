@@ -1,11 +1,9 @@
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import Image from "next/image";
 import Header from "@components/header";
-import styles from "@styles/home.module.css";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import ProductCard from "@components/products/ProductCard";
-import { useEffect, useState } from "react";
 import ProductService from "@services/ProductService";
 import AddProductForm from "@components/products/AddProductForm";
 import Modal from "@components/Modal"; // Assuming you have a Modal component
@@ -43,6 +41,25 @@ const Home: React.FC = () => {
     setShowModal(false);
   };
 
+  const handleProductAdded = async () => {
+    try {
+      const data = await ProductService.getProducts();
+      setProducts(data);
+      setShowModal(false); // Close the modal
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+    }
+  };
+
+  const handleDeleteProduct = async (productId: number) => {
+    try {
+      await ProductService.deleteProduct(productId);
+      setProducts(products.filter((product) => product.id !== productId));
+    } catch (error) {
+      console.error("Failed to delete product:", error);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -63,11 +80,19 @@ const Home: React.FC = () => {
           </button>
         )}
         <Modal show={showModal} onClose={handleCloseModal}>
-          <AddProductForm />
+          <AddProductForm onProductAdded={handleProductAdded} />
         </Modal>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {products.map((product) => (
-            <ProductCard key={product.id} {...product} />
+            <ProductCard
+              key={product.id}
+              name={product.name}
+              price={product.price}
+              image={product.image}
+              description={product.description}
+              isAdmin={isAdmin}
+              onDelete={() => handleDeleteProduct(product.id)}
+            />
           ))}
         </div>
       </main>

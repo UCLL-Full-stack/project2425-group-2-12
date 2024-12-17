@@ -14,6 +14,10 @@ const getUserByUsername = async ({ username }: { username: string }): Promise<Us
     return user;
 };
 
+const getUserById = async (id: number): Promise<User | null> => {
+    return await userDB.getUserById({ id });
+};
+
 const authenticate = async ({ username, password }: UserInput): Promise<AuthenticationResponse> => {
     const user = await getUserByUsername({ username });
 
@@ -50,4 +54,4 @@ const createUser = async ({
     return await userDB.createUser(user);
 };
 
-export default { getUserByUsername, authenticate, createUser, getAllUsers };
+export default { getUserByUsername, authenticate, createUser, getAllUsers, getUserById };

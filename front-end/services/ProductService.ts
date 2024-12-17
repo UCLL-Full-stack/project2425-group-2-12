@@ -42,9 +42,34 @@ const createProduct = async (productData: {
   return response.json();
 };
 
+const deleteProduct = async (productId: number) => {
+  const storedUser = localStorage.getItem("loggedInUser");
+  if (!storedUser) {
+    throw new Error("User not authenticated");
+  }
+
+  const { token } = JSON.parse(storedUser);
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/products/${productId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to delete product");
+  }
+};
+
 const ProductService = {
   getProducts,
   createProduct,
+  deleteProduct, // Add deleteProduct to the ProductService
 };
 
 export default ProductService;

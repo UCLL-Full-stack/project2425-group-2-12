@@ -52,7 +52,15 @@ const UserLoginForm: React.FC = () => {
       });
       if (!response.ok) {
         const data = await response.json();
-        setStatusMessages([{ message: data.message, type: "error" }]);
+        if (response.status === 401) {
+          setStatusMessages([
+            { message: t("login.error.invalidCredentials"), type: "error" },
+          ]);
+        } else {
+          setStatusMessages([
+            { message: data.message || t("general.error"), type: "error" },
+          ]);
+        }
         return;
       }
 
@@ -76,7 +84,7 @@ const UserLoginForm: React.FC = () => {
 
       setTimeout(() => {
         router.push("/");
-      }, 2000);
+      }, 500);
     } catch (error) {
       setStatusMessages([{ message: t("general.error"), type: "error" }]);
     }

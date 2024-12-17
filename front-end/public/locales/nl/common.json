@@ -5,12 +5,16 @@
   "login": {
     "title": "Inloggen",
     "button": "Inloggen",
-    "success": "Inloggen gelukt. Doorverwijzen naar de startpagina...",
+    "success": "Inloggen gelukt.",
     "validate": {
       "name": "Naam is verplicht",
       "password": "Wachtwoord is verplicht"
     },
-    "label": { "username": "Gebruikersnaam:", "password": "Wachtwoord:" }
+    "label": { "username": "Gebruikersnaam:", "password": "Wachtwoord:" },
+    "error": {
+      "invalidCredentials": "Ongeldige inloggegevens.",
+      "serverError": "Er is een fout opgetreden bij het inloggen. Probeer het later opnieuw."
+    }
   },
   "header": {
     "welcome": "Welkom",
