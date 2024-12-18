@@ -1,14 +1,40 @@
 import cartDb from '../repository/cart.db';
+import userDb from '../repository/user.db';
+import productDb from '../repository/product.db';
 
-const getCartByUserId = async (userId: number) => {
-    return cartDb.getCartByUserId(userId);
+const getCartItemsByUsername = async (username: string) => {
+    const user = await userDb.getUserByUsername({ username });
+    if (!user) {
+        throw new Error(`User with username: ${username} does not exist.`);
+    }
+    const cart = await cartDb.getCartItemsByUserId(user.getId()!);
+    const cartProducts = cart.getProducts();
+
+    // Fetch product details for each cart item
+    const products = await Promise.all(
+        cartProducts.map(async (cartProduct) => {
+            const product = await productDb.getProductById({ id: cartProduct.getProductId() });
+            return {
+                ...cartProduct,
+                productName: product?.getName(),
+                productDescription: product?.getDescription(),
+                productPrice: product?.getPrice(),
+                productImage: product?.getImage(),
+            };
+        })
+    );
+
+    return products;
 };
 
-const updateCart = async (userId: number, items: any) => {
-    return cartDb.updateCart(userId, items);
+const addProductToCart = async (username: string, productId: number, quantity: number) => {
+    const user = await userDb.getUserByUsername({ username });
+    if (!user) {
+        throw new Error(`User with username: ${username} does not exist.`);
+    }
+    const cart = await cartDb.getCartItemsByUserId(user.getId()!);
+    const updatedCart = await cartDb.addProductToCart(cart.getId()!, productId, quantity);
+    return updatedCart;
 };
 
-export default {
-    getCartByUserId,
-    updateCart,
-};
+export default { getCartItemsByUsername, addProductToCart };

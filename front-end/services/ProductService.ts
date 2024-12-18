@@ -9,7 +9,6 @@ const getProducts = async () => {
   if (!response.ok) {
     throw new Error("Failed to fetch products");
   }
-
   return response.json();
 };
 

@@ -1,8 +1,9 @@
 import React from "react";
 import { useTranslation } from "next-i18next";
-import { addToCart } from "@services/CartService"; // Import the new service function
+import CartService from "@services/CartService";
 
 interface ProductCardProps {
+  id: string;
   name: string;
   price: number;
   image: string;
@@ -12,6 +13,7 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
+  id,
   name,
   price,
   image,
@@ -22,11 +24,24 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const { t } = useTranslation();
 
   const handleAddToCart = async () => {
+    const loggedInUser = JSON.parse(
+      localStorage.getItem("loggedInUser") || "{}"
+    );
+    const username = loggedInUser.username;
+
+    if (!username) {
+      console.error("User is not logged in");
+      return;
+    }
+
     try {
-      await addToCart({ name, price, image, description });
-      alert("Product added to cart successfully!");
+      await CartService.addProductToCart(username, {
+        productId: id,
+        quantity: 1,
+      });
+      console.log("Product added to cart successfully");
     } catch (error) {
-      console.error("Failed to add product to cart:", error);
+      console.error("Failed to add product to cart", error);
     }
   };
 

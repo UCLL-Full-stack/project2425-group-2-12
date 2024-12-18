@@ -30,7 +30,7 @@ app.use(
             '/users/signup',
             '/status',
             '/products',
-            '/cart',
+            /^\/cart\/.*/,
         ],
     })
 );

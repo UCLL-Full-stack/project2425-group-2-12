@@ -4,23 +4,30 @@ import Header from "@components/header";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import CartItem from "@components/cart/CartItem";
+import CartService from "@services/CartService";
 
 const Cart: React.FC = () => {
   const { t } = useTranslation();
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState<any[]>([]);
 
   useEffect(() => {
-    const storedCart = localStorage.getItem("cart");
-    if (storedCart) {
-      setCartItems(JSON.parse(storedCart));
-    }
+    const username = JSON.parse(
+      localStorage.getItem("loggedInUser") || "{}"
+    ).username;
+
+    const fetchCartItems = async (username) => {
+      try {
+        const data = await CartService.getCartItemsByUsername(username);
+        setCartItems(data);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+      }
+    };
+
+    fetchCartItems(username); // Initial fetch
   }, []);
 
-  const handleRemoveItem = (index: number) => {
-    const updatedCart = cartItems.filter((_, i) => i !== index);
-    setCartItems(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-  };
+  const handleRemoveItem = (index: number) => {};
 
   const totalPrice = cartItems.reduce((total, item) => total + item.price, 0);
 

@@ -1,11 +1,11 @@
-// Execute: npx ts-node util/seed.ts
-
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 const main = async () => {
+    await prisma.cartProduct.deleteMany();
+    await prisma.cart.deleteMany();
     await prisma.user.deleteMany();
     await prisma.product.deleteMany();
 
@@ -55,6 +55,36 @@ const main = async () => {
             price: 19.99,
             image: '/images/product3.png',
             description: 'Description for Product 3',
+        },
+    });
+
+    // Create empty carts for the users
+    const adminCart = await prisma.cart.create({
+        data: {
+            userId: admin.id,
+        },
+    });
+
+    const userCart = await prisma.cart.create({
+        data: {
+            userId: user.id,
+        },
+    });
+
+    // Add items to the carts
+    await prisma.cartProduct.create({
+        data: {
+            cartId: adminCart.id,
+            productId: product1.id,
+            quantity: 1,
+        },
+    });
+
+    await prisma.cartProduct.create({
+        data: {
+            cartId: userCart.id,
+            productId: product2.id,
+            quantity: 1,
         },
     });
 };

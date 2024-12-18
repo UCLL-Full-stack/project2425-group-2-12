@@ -1,52 +1,56 @@
-const getCart = async () => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
+const getCartItemsByUsername = async (username: string) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/cart/${username}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   if (!response.ok) {
-    console.error(
-      `Failed to fetch cart: ${response.status} ${response.statusText}`
-    );
+    throw new Error("Failed to fetch cart items");
   }
-
-  return response.json();
+  const data = await response.json();
+  return Array.isArray(data)
+    ? data.map((item) => ({
+        id: item.id,
+        cartId: item.cartId,
+        productId: item.productId,
+        name: item.productName,
+        description: item.productDescription,
+        price: item.productPrice,
+        image: item.productImage,
+        quantity: item.quantity,
+      }))
+    : [];
 };
 
-export const addToCart = async (productData: {
-  name: string;
-  price: number;
-  image: string;
-  description: string;
-}) => {
-  const storedUser = localStorage.getItem("loggedInUser");
-  if (!storedUser) {
-    throw new Error("User not authenticated");
-  }
-
-  const { token } = JSON.parse(storedUser);
-
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`, // Include the token in the Authorization header
-    },
-    body: JSON.stringify(productData),
-  });
-
+const addProductToCart = async (
+  username: string,
+  product: { productId: string; quantity: number }
+) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/cart/${username}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(product),
+    }
+  );
+  console.log(product);
   if (!response.ok) {
     throw new Error("Failed to add product to cart");
   }
-
-  return response.json();
+  const data = await response.json();
+  return data;
 };
 
 const CartService = {
-  getCart,
-  addToCart,
+  getCartItemsByUsername,
+  addProductToCart,
 };
 
 export default CartService;

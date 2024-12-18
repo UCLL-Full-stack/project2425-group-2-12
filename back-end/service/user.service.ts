@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import userDB from '../repository/user.db';
+import cartDB from '../repository/cart.db'; // Import cartDB
 import { AuthenticationResponse, UserInput } from '../types';
 import { generateJwtToken } from '../util/jwt';
 import { User } from '../model/user';
@@ -51,7 +52,12 @@ const createUser = async ({
     const hashedPassword = await bcrypt.hash(password, 12);
     const user = new User({ username, password: hashedPassword, firstName, lastName, email, role });
 
-    return await userDB.createUser(user);
+    const createdUser = await userDB.createUser(user);
+
+    // Create an empty cart for the new user
+    await cartDB.createEmptyCart(createdUser.getId()!);
+
+    return createdUser;
 };
 
 export default { getUserByUsername, authenticate, createUser, getAllUsers, getUserById };
