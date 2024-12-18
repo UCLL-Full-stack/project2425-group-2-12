@@ -1,4 +1,4 @@
-type Role = 'admin' | 'student' | 'guest';
+type Role = 'admin' | 'guest';
 
 type UserInput = {
     id?: number;
@@ -8,12 +8,6 @@ type UserInput = {
     lastName: string;
     email: string;
     role: Role;
-};
-
-type StudentInput = {
-    id?: number;
-    user: UserInput;
-    studentnumber: string;
 };
 
 type ProductInput = {
@@ -31,4 +25,4 @@ type AuthenticationResponse = {
     role: string;
 };
 
-export { Role, UserInput, StudentInput, ProductInput, AuthenticationResponse };
+export { Role, UserInput, ProductInput, AuthenticationResponse };

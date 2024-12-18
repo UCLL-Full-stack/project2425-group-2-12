@@ -8,17 +8,6 @@ datasource db {
 }
 
 
-model Student {
-  id            Int        @id @default(autoincrement())
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-  studentnumber String     @unique
-  userId        Int        @unique
-  user          User       @relation(fields: [userId], references: [id])
-}
-
-
-
 model User {
   id        Int       @id @default(autoincrement())
   username  String    @unique
@@ -27,7 +16,7 @@ model User {
   email     String    @unique
   password  String
   role      String
-  student   Student?
+  cart      Cart?
 }
 
 model Product {
@@ -36,4 +25,11 @@ model Product {
   price       Float
   image       String
   description String
+}
+
+model Cart {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id])
+  items     Json
 }

@@ -5,9 +5,9 @@ import * as bodyParser from 'body-parser';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { expressjwt } from 'express-jwt';
-import { studentRouter } from './controller/student.routes';
 import { userRouter } from './controller/user.routes';
 import { productRouter } from './controller/product.routes'; // Import productRouter
+import { cartRouter } from './controller/cart.routes'; // Import cartRouter
 import helmet from 'helmet';
 
 dotenv.config();
@@ -15,7 +15,7 @@ const app = express();
 const port = process.env.APP_PORT || 3000;
 
 app.use(helmet());
-app.use(cors({ origin: 'http://localhost:8080' })); // Ensure this matches your frontend URL
+app.use(cors({ origin: 'http://localhost:8080' }));
 app.use(bodyParser.json());
 
 app.use(
@@ -29,14 +29,15 @@ app.use(
             '/users/login',
             '/users/signup',
             '/status',
-            '/products', // Make /products endpoint public
+            '/products',
+            /^\/cart\/.*/,
         ],
     })
 );
 
-app.use('/students', studentRouter);
 app.use('/users', userRouter);
-app.use('/products', productRouter); // Add productRouter
+app.use('/products', productRouter);
+app.use('/cart', cartRouter);
 
 app.get('/status', (req, res) => {
     res.json({ message: 'Courses API is running...' });

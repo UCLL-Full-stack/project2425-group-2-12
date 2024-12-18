@@ -29,5 +29,15 @@
   "home": {
     "addProductButton": "Add product",
     "title": "Our products:"
+  },
+  "product": {
+    "addToCart": "Add to cart"
+  },
+  "cart": {
+    "title": "Shopping cart",
+    "empty": "Your shopping cart is empty.",
+    "total": "Total",
+    "checkout": "Checkout",
+    "remove": "Remove"
   }
 }

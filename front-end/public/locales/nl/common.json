@@ -29,5 +29,15 @@
   "home": {
     "addProductButton": "Product toevoegen",
     "title": "Onze producten:"
+  },
+  "product": {
+    "addToCart": "Toevoegen"
+  },
+  "cart": {
+    "title": "Winkelwagen",
+    "empty": "Uw winkelwagen is leeg.",
+    "total": "Totaal",
+    "checkout": "Afrekenen",
+    "remove": "Verwijderen"
   }
 }

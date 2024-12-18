@@ -66,10 +66,67 @@ const deleteProduct = async (productId: number) => {
   }
 };
 
+const getCart = async () => {
+  const storedUser = localStorage.getItem("loggedInUser");
+  if (!storedUser) {
+    throw new Error("User not authenticated");
+  }
+
+  const { token } = JSON.parse(storedUser);
+
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      console.error(
+        `Failed to fetch cart: ${response.status} ${response.statusText}`
+      );
+      throw new Error("Failed to fetch cart");
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching cart:", error);
+    throw error;
+  }
+};
+
+const updateCart = async (items: any) => {
+  const storedUser = localStorage.getItem("loggedInUser");
+  if (!storedUser) {
+    throw new Error("User not authenticated");
+  }
+
+  const { token } = JSON.parse(storedUser);
+
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ items }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update cart");
+  }
+
+  return response.json();
+};
+
 const ProductService = {
   getProducts,
   createProduct,
   deleteProduct, // Add deleteProduct to the ProductService
+  getCart,
+  updateCart,
 };
 
 export default ProductService;

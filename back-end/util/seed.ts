@@ -2,7 +2,6 @@
 
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
-import { set } from 'date-fns';
 
 const prisma = new PrismaClient();
 
@@ -19,38 +18,6 @@ const main = async () => {
             lastName: 'admin',
             email: 'administration@ucll.be',
             role: 'admin',
-        },
-    });
-
-    const student1 = await prisma.student.create({
-        data: {
-            studentnumber: 'r0785023',
-            user: {
-                create: {
-                    username: 'peterp',
-                    password: await bcrypt.hash('peterp123', 12),
-                    firstName: 'Peter',
-                    lastName: 'Parker',
-                    email: 'peter.parker@ucll.be',
-                    role: 'student',
-                },
-            },
-        },
-    });
-
-    const student2 = await prisma.student.create({
-        data: {
-            studentnumber: 'r0785024',
-            user: {
-                create: {
-                    username: 'brucew',
-                    password: await bcrypt.hash('brucew123', 12),
-                    firstName: 'Bruce',
-                    lastName: 'Wayne',
-                    email: 'bruce.wayne@ucll.be',
-                    role: 'student',
-                },
-            },
         },
     });
 
@@ -80,8 +47,6 @@ const main = async () => {
             description: 'Description for Product 3',
         },
     });
-
-    console.log({ admin, student1, student2, product1, product2, product3 });
 };
 
 main()

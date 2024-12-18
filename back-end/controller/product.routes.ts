@@ -1,7 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import productService from '../service/product.service';
 import { ProductInput } from '../types';
-import { checkAdmin } from '../middleware/auth';
 
 const productRouter = express.Router();
 
@@ -83,7 +82,7 @@ productRouter.get('/:id', async (req: Request, res: Response, next: NextFunction
  *             schema:
  *               $ref: '#/components/schemas/Product'
  */
-productRouter.post('/', checkAdmin, async (req: Request, res: Response, next: NextFunction) => {
+productRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const productInput = <ProductInput>req.body;
         const product = await productService.createProduct(productInput);
@@ -121,7 +120,7 @@ productRouter.post('/', checkAdmin, async (req: Request, res: Response, next: Ne
  *       404:
  *         description: Product not found
  */
-productRouter.put('/:id', checkAdmin, async (req: Request, res: Response, next: NextFunction) => {
+productRouter.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const productInput = <ProductInput>req.body;
         const product = await productService.updateProduct(Number(req.params.id), productInput);
@@ -153,17 +152,13 @@ productRouter.put('/:id', checkAdmin, async (req: Request, res: Response, next: 
  *       404:
  *         description: Product not found
  */
-productRouter.delete(
-    '/:id',
-    checkAdmin,
-    async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            await productService.deleteProduct(Number(req.params.id));
-            res.status(204).end();
-        } catch (error) {
-            next(error);
-        }
+productRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await productService.deleteProduct(Number(req.params.id));
+        res.status(204).end();
+    } catch (error) {
+        next(error);
     }
-);
+});
 
 export { productRouter };
