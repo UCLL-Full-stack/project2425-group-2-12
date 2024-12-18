@@ -41,7 +41,12 @@ const Header: React.FC = () => {
             {t("cart.title")}
           </Link>
           {loggedInUser && (
-            <div className="text-white text-xl">{loggedInUser.fullname}</div>
+            <Link
+              href={`/profile/${loggedInUser.username}`}
+              className="text-white text-xl hover:bg-blue-700 rounded-lg px-4 py-2"
+            >
+              {loggedInUser.fullname}
+            </Link>
           )}
           {!loggedInUser && (
             <Link

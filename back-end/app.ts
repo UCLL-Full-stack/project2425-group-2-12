@@ -31,6 +31,7 @@ app.use(
             '/status',
             '/products',
             /^\/cart\/.*/,
+            '/profile',
         ],
     })
 );

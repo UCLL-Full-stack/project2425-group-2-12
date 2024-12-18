@@ -2,6 +2,7 @@
   "app.title": "Brol.com",
   "general.error": "Er is een fout opgetreden. Probeer het later opnieuw.",
   "general.unauthorized": "U bent niet gemachtigd om toegang te krijgen tot deze bron.",
+  "general.loading": "Laden...",
   "login": {
     "title": "Inloggen",
     "button": "Inloggen",
@@ -39,5 +40,11 @@
     "total": "Totaal",
     "checkout": "Afrekenen",
     "remove": "Verwijderen"
+  },
+  "profile": {
+    "title": "Profiel van {{username}}",
+    "fullname": "Volledige naam",
+    "email": "E-mail",
+    "role": "Rol"
   }
 }

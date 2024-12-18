@@ -5,7 +5,13 @@ import { AuthenticationResponse, UserInput } from '../types';
 import { generateJwtToken } from '../util/jwt';
 import { User } from '../model/user';
 
-const getAllUsers = async (): Promise<User[]> => userDB.getAllUsers();
+const getAllUsers = async (): Promise<User[]> => {
+    const users = await userDB.getAllUsers();
+    if (!users) {
+        throw new Error('No users found.');
+    }
+    return users;
+};
 
 const getUserByUsername = async ({ username }: { username: string }): Promise<User> => {
     const user = await userDB.getUserByUsername({ username });
