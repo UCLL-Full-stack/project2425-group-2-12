@@ -13,23 +13,6 @@ const getProducts = async () => {
   return response.json();
 };
 
-const getCart = async () => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (!response.ok) {
-    console.error(
-      `Failed to fetch cart: ${response.status} ${response.statusText}`
-    );
-  }
-
-  return response.json();
-};
-
 const createProduct = async (productData: {
   name: string;
   price: number;
@@ -87,7 +70,6 @@ const ProductService = {
   getProducts,
   createProduct,
   deleteProduct, // Add deleteProduct to the ProductService
-  getCart,
 };
 
 export default ProductService;

@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "next-i18next";
-import ProductService from "@services/ProductService";
+import { addToCart } from "@services/CartService"; // Import the new service function
 
 interface ProductCardProps {
   name: string;
@@ -23,15 +23,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   const handleAddToCart = async () => {
     try {
-      const storedCart = localStorage.getItem("cart");
-      const cart = storedCart ? JSON.parse(storedCart) : [];
-      cart.push({ name, price, image, description });
-      localStorage.setItem("cart", JSON.stringify(cart));
-
-      // Update the cart in the backend
-      await ProductService.updateCart(cart);
+      await addToCart({ name, price, image, description });
+      alert("Product added to cart successfully!");
     } catch (error) {
-      console.error("Error adding to cart:", error);
+      console.error("Failed to add product to cart:", error);
     }
   };
 
