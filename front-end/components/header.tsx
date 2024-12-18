@@ -34,6 +34,15 @@ const Header: React.FC = () => {
           >
             {t("header.nav.home")}
           </Link>
+          <Link
+            href="/cart"
+            className="text-white text-xl hover:bg-blue-700 rounded-lg px-4 py-2"
+          >
+            {t("cart.title")}
+          </Link>
+          {loggedInUser && (
+            <div className="text-white text-xl">{loggedInUser.fullname}</div>
+          )}
           {!loggedInUser && (
             <Link
               href="/login"
@@ -50,9 +59,6 @@ const Header: React.FC = () => {
             >
               {t("header.nav.logout")}
             </a>
-          )}
-          {loggedInUser && (
-            <div className="text-white text-xl">{loggedInUser.fullname}</div>
           )}
           <Language />
         </div>

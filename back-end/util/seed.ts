@@ -6,7 +6,6 @@ import bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 const main = async () => {
-    await prisma.student.deleteMany();
     await prisma.user.deleteMany();
     await prisma.product.deleteMany();
 
@@ -18,6 +17,17 @@ const main = async () => {
             lastName: 'admin',
             email: 'administration@ucll.be',
             role: 'admin',
+        },
+    });
+
+    const user = await prisma.user.create({
+        data: {
+            username: 'user',
+            password: await bcrypt.hash('user123', 12),
+            firstName: 'user',
+            lastName: 'user',
+            email: 'user@ucll.be',
+            role: 'user',
         },
     });
 

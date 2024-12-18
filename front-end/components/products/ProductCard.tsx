@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "next-i18next";
+import ProductService from "@services/ProductService";
 
 interface ProductCardProps {
   name: string;
@@ -18,13 +19,21 @@ const ProductCard: React.FC<ProductCardProps> = ({
   isAdmin,
   onDelete,
 }) => {
-  const handleAddToCart = () => {
-    const storedCart = localStorage.getItem("cart");
-    const cart = storedCart ? JSON.parse(storedCart) : [];
-    cart.push({ name, price, image, description });
-    localStorage.setItem("cart", JSON.stringify(cart));
-  };
   const { t } = useTranslation();
+
+  const handleAddToCart = async () => {
+    try {
+      const storedCart = localStorage.getItem("cart");
+      const cart = storedCart ? JSON.parse(storedCart) : [];
+      cart.push({ name, price, image, description });
+      localStorage.setItem("cart", JSON.stringify(cart));
+
+      // Update the cart in the backend
+      await ProductService.updateCart(cart);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
+  };
 
   return (
     <div className="max-w-sm rounded overflow-hidden shadow-lg p-4">
