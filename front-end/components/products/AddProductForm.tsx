@@ -70,7 +70,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({ onProductAdded }) => {
           Image URL:
         </label>
         <input
-          type="text"
+          type="file"
           value={image}
           onChange={(e) => setImage(e.target.value)}
           className="w-full px-3 py-2 border rounded"

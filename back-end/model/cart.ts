@@ -1,14 +1,15 @@
-import { Cart as CartPrisma } from '@prisma/client';
+import { Cart as CartPrisma, CartProduct as CartProductPrisma } from '@prisma/client';
+import { CartProduct } from './cartProduct';
 
 export class Cart {
     private id?: number;
     private userId: number;
-    private items: any;
+    private products: CartProduct[];
 
-    constructor(cart: { id?: number; userId: number; items: any }) {
+    constructor(cart: { id?: number; userId: number; products: CartProduct[] }) {
         this.id = cart.id;
         this.userId = cart.userId;
-        this.items = cart.items;
+        this.products = cart.products;
     }
 
     getId(): number | undefined {
@@ -19,15 +20,15 @@ export class Cart {
         return this.userId;
     }
 
-    getItems(): any {
-        return this.items;
+    getProducts(): CartProduct[] {
+        return this.products;
     }
 
-    static from(cart: CartPrisma): Cart {
+    static from(cart: CartPrisma & { products: CartProductPrisma[] }): Cart {
         return new Cart({
             id: cart.id,
             userId: cart.userId,
-            items: cart.items,
+            products: cart.products.map(CartProduct.from),
         });
     }
 }

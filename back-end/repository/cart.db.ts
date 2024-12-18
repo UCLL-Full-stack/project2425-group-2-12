@@ -5,6 +5,7 @@ const getCartByUserId = async (userId: number): Promise<Cart | null> => {
     try {
         const cart = await database.cart.findUnique({
             where: { userId },
+            include: { products: true },
         });
         return cart ? Cart.from(cart) : null;
     } catch (error) {
@@ -13,12 +14,32 @@ const getCartByUserId = async (userId: number): Promise<Cart | null> => {
     }
 };
 
-const updateCart = async (userId: number, items: any): Promise<Cart> => {
+const updateCart = async (
+    userId: number,
+    items: { productId: number; quantity: number }[]
+): Promise<Cart> => {
     try {
         const cart = await database.cart.upsert({
             where: { userId },
-            update: { items },
-            create: { userId, items },
+            update: {
+                products: {
+                    deleteMany: {},
+                    create: items.map((item) => ({
+                        productId: item.productId,
+                        quantity: item.quantity,
+                    })),
+                },
+            },
+            create: {
+                userId,
+                products: {
+                    create: items.map((item) => ({
+                        productId: item.productId,
+                        quantity: item.quantity,
+                    })),
+                },
+            },
+            include: { products: true },
         });
         return Cart.from(cart);
     } catch (error) {

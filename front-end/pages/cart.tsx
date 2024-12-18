@@ -4,26 +4,25 @@ import Header from "@components/header";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import CartItem from "@components/cart/CartItem";
-import ProductService from "@services/ProductService";
 
 const Cart: React.FC = () => {
   const { t } = useTranslation();
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
-    const fetchCart = async () => {
-      const cart = await ProductService.getCart();
-      setCartItems(cart.items);
-    };
-
-    fetchCart();
+    const storedCart = localStorage.getItem("cart");
+    if (storedCart) {
+      setCartItems(JSON.parse(storedCart));
+    }
   }, []);
 
-  const handleRemoveItem = async (index: number) => {
+  const handleRemoveItem = (index: number) => {
     const updatedCart = cartItems.filter((_, i) => i !== index);
     setCartItems(updatedCart);
-    await ProductService.updateCart(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
+
+  const totalPrice = cartItems.reduce((total, item) => total + item.price, 0);
 
   return (
     <>
@@ -36,7 +35,7 @@ const Cart: React.FC = () => {
         {cartItems.length === 0 ? (
           <p>{t("cart.empty")}</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div>
             {cartItems.map((item, index) => (
               <CartItem
                 key={index}
@@ -44,6 +43,14 @@ const Cart: React.FC = () => {
                 onRemove={() => handleRemoveItem(index)}
               />
             ))}
+            <div className="flex justify-between items-center mt-4 p-4 border-t">
+              <span className="text-xl font-bold">
+                {t("cart.total")}: €{totalPrice}
+              </span>
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                {t("cart.checkout")}
+              </button>
+            </div>
           </div>
         )}
       </main>
