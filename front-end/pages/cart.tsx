@@ -27,7 +27,19 @@ const Cart: React.FC = () => {
     fetchCartItems(username); // Initial fetch
   }, []);
 
-  const handleRemoveItem = (index: number) => {};
+  const handleRemoveItem = async (productId: string) => {
+    const username = JSON.parse(
+      localStorage.getItem("loggedInUser") || "{}"
+    ).username;
+    try {
+      await CartService.removeProductFromCart(username, productId);
+      setCartItems((prevItems) =>
+        prevItems.filter((item) => item.productId !== productId)
+      );
+    } catch (error) {
+      console.error("Failed to remove product:", error);
+    }
+  };
 
   const totalPrice = cartItems.reduce((total, item) => total + item.price, 0);
 
@@ -47,7 +59,7 @@ const Cart: React.FC = () => {
               <CartItem
                 key={index}
                 item={item}
-                onRemove={() => handleRemoveItem(index)}
+                onRemove={() => handleRemoveItem(item.productId)}
               />
             ))}
             <div className="flex justify-between items-center mt-4 p-4 border-t">

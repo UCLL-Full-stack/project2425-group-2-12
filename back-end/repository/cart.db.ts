@@ -72,4 +72,31 @@ const addProductToCart = async (cartId: number, productId: number, quantity: num
     }
 };
 
-export default { getCartItemsByUserId, createEmptyCart, addProductToCart };
+const removeProductFromCart = async (cartId: number, productId: number) => {
+    try {
+        await database.cartProduct.delete({
+            where: {
+                cartId_productId: {
+                    cartId: cartId,
+                    productId: productId,
+                },
+            },
+        });
+
+        const updatedCart = await database.cart.findUnique({
+            where: { id: cartId },
+            include: { products: true },
+        });
+
+        if (!updatedCart) {
+            throw new Error('Cart not found');
+        }
+
+        return Cart.from(updatedCart);
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
+    }
+};
+
+export default { getCartItemsByUserId, createEmptyCart, addProductToCart, removeProductFromCart };

@@ -24,4 +24,20 @@ cartRouter.post('/:username', async (req: Request, res: Response, next: NextFunc
     }
 });
 
+cartRouter.delete(
+    '/:username/:productId',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { username, productId } = req.params;
+            const updatedCart = await cartService.removeProductFromCart(
+                username,
+                Number(productId)
+            );
+            res.status(200).json(updatedCart);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
 export { cartRouter };

@@ -37,4 +37,14 @@ const addProductToCart = async (username: string, productId: number, quantity: n
     return updatedCart;
 };
 
-export default { getCartItemsByUsername, addProductToCart };
+const removeProductFromCart = async (username: string, productId: number) => {
+    const user = await userDb.getUserByUsername({ username });
+    if (!user) {
+        throw new Error(`User with username: ${username} does not exist.`);
+    }
+    const cart = await cartDb.getCartItemsByUserId(user.getId()!);
+    const updatedCart = await cartDb.removeProductFromCart(cart.getId()!, productId);
+    return updatedCart;
+};
+
+export default { getCartItemsByUsername, addProductToCart, removeProductFromCart };

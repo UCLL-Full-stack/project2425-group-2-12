@@ -48,9 +48,27 @@ const addProductToCart = async (
   return data;
 };
 
+const removeProductFromCart = async (username: string, productId: string) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/cart/${username}/${productId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  if (!response.ok) {
+    throw new Error("Failed to remove product from cart");
+  }
+  const data = await response.json();
+  return data;
+};
+
 const CartService = {
   getCartItemsByUsername,
   addProductToCart,
+  removeProductFromCart,
 };
 
 export default CartService;
