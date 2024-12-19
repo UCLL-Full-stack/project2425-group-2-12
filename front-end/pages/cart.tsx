@@ -13,6 +13,7 @@ const calculateTotalPrice = (items) => {
 const Cart: React.FC = () => {
   const { t } = useTranslation("common");
   const [cartItems, setCartItems] = useState<any[]>([]);
+  const [error, setError] = useState<string>();
 
   useEffect(() => {
     const username = JSON.parse(
@@ -20,11 +21,28 @@ const Cart: React.FC = () => {
     ).username;
 
     const fetchCartItems = async (username) => {
-      try {
-        const data = await CartService.getCartItemsByUsername(username);
+      setError("");
+      const response = await CartService.getCartItemsByUsername(username);
+
+      if (response.status === 401) {
+        setError(t("general.unauthorized"));
+      } else if (!response.ok) {
+        setError(response.statusText);
+      } else {
+        const cartItems = await response.json();
+        const data = Array.isArray(cartItems)
+          ? cartItems.map((item) => ({
+              id: item.id,
+              cartId: item.cartId,
+              productId: item.productId,
+              name: item.productName,
+              description: item.productDescription,
+              price: item.productPrice,
+              image: item.productImage,
+              quantity: item.quantity,
+            }))
+          : [];
         setCartItems(data);
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
       }
     };
 
@@ -55,6 +73,7 @@ const Cart: React.FC = () => {
       <Header />
       <main className="container mx-auto p-4">
         <h1 className="text-2xl font-bold mb-4">{t("cart.title")}</h1>
+        {error && <div className="text-red-800">{error}</div>}
         {cartItems.length === 0 ? (
           <p>{t("cart.empty")}</p>
         ) : (

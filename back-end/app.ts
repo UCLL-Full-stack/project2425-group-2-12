@@ -31,7 +31,6 @@ app.use(
             '/users/signup',
             '/status',
             '/products',
-            /^\/cart\/.*/,
             '/profile',
             /^\/address\/.*/,
         ],

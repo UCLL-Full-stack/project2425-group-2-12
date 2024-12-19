@@ -39,7 +39,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
         productId: id,
         quantity: 1,
       });
-      console.log("Product added to cart successfully");
     } catch (error) {
       console.error("Failed to add product to cart", error);
     }
