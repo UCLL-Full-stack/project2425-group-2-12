@@ -7,6 +7,8 @@ const cartRouter = express.Router();
  * @swagger
  * /cart/{username}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get cart items by username
  *     parameters:
  *       - in: path
@@ -39,6 +41,8 @@ cartRouter.get('/:username', async (req: Request, res: Response, next: NextFunct
  * @swagger
  * /cart/{username}:
  *   post:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Add a product to the cart
  *     parameters:
  *       - in: path
@@ -81,6 +85,8 @@ cartRouter.post('/:username', async (req: Request, res: Response, next: NextFunc
  * @swagger
  * /cart/{username}/{productId}:
  *   delete:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Remove a product from the cart
  *     parameters:
  *       - in: path

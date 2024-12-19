@@ -81,7 +81,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import userService from '../service/user.service';
 import { UserInput } from '../types/index';
-import { Address } from '../model/address';
 
 const userRouter = express.Router();
 
@@ -191,6 +190,8 @@ userRouter.post('/signup', async (req: Request, res: Response, next: NextFunctio
  * @swagger
  * /users/{id}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a user by ID
  *     description: Retrieve a user by their ID.
  *     parameters:
@@ -234,6 +235,8 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
  * @swagger
  * /users/username/{username}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a user by username
  *     parameters:
  *       - in: path

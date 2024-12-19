@@ -8,6 +8,8 @@ const addressRouter = express.Router();
  * @swagger
  * /address/{username}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get address by username
  *     parameters:
  *       - in: path
@@ -38,6 +40,8 @@ addressRouter.get('/:username', async (req: Request, res: Response, next: NextFu
  * @swagger
  * /address/{username}:
  *   put:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Update address by username
  *     parameters:
  *       - in: path

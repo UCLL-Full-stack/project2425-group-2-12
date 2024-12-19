@@ -8,6 +8,8 @@ const productRouter = express.Router();
  * @swagger
  * /products:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a list of all products
  *     responses:
  *       200:
@@ -32,6 +34,8 @@ productRouter.get('/', async (req: Request, res: Response, next: NextFunction) =
  * @swagger
  * /products/{id}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a product by ID
  *     parameters:
  *       - in: path
@@ -67,6 +71,8 @@ productRouter.get('/:id', async (req: Request, res: Response, next: NextFunction
  * @swagger
  * /products:
  *   post:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Create a new product
  *     requestBody:
  *       required: true
@@ -96,6 +102,8 @@ productRouter.post('/', async (req: Request, res: Response, next: NextFunction) 
  * @swagger
  * /products/{id}:
  *   put:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Update a product by ID
  *     parameters:
  *       - in: path
@@ -138,6 +146,8 @@ productRouter.put('/:id', async (req: Request, res: Response, next: NextFunction
  * @swagger
  * /products/{id}:
  *   delete:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Delete a product by ID
  *     parameters:
  *       - in: path
