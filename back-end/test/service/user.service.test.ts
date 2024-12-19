@@ -4,9 +4,8 @@ import cartDb from '../../repository/cart.db';
 import addressDb from '../../repository/address.db';
 import userService from '../../service/user.service';
 import { User } from '../../model/user';
-import { Address } from '../../model/address';
 import { generateJwtToken } from '../../util/jwt';
-import { Role, UserInput } from '../../types';
+import { UserInput, Address, Role } from '../../types';
 
 jest.mock('../../repository/user.db');
 jest.mock('../../repository/cart.db');
@@ -34,14 +33,23 @@ const user = new User({
     role: Role.CUSTOMER,
 });
 
-const address = new Address({
+const address: Address = {
     street: 'Main St',
     house: '123',
     postalCode: '12345',
     city: 'Anytown',
     country: 'Country',
-    userId: user.getId()!,
-});
+};
+
+const userInput: UserInput = {
+    username: 'johndoe',
+    password: 'password123',
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@example.com',
+    role: Role.CUSTOMER,
+    address: address,
+};
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -62,6 +70,13 @@ test('given a valid user input, when authenticating, then JWT token is returned'
         lastName: 'Doe',
         email: 'john.doe@example.com',
         role: Role.CUSTOMER,
+        address: {
+            street: 'Main St',
+            house: '123',
+            postalCode: '12345',
+            city: 'Anytown',
+            country: 'Country',
+        },
     };
 
     mockGetUserByUsername.mockResolvedValue(user);
@@ -108,7 +123,7 @@ test('given a valid user input, when creating user, then user is created', async
     expect(mockGetUserByUsername).toHaveBeenCalledWith({ username: 'johndoe' });
     expect(mockBcryptHash).toHaveBeenCalledWith('password123', 12);
     expect(mockCreateUser).toHaveBeenCalledWith(expect.any(User));
-    expect(mockCreateAddress).toHaveBeenCalledWith(expect.any(Address));
+    expect(mockCreateAddress).toHaveBeenCalledWith(expect.any(Object));
     expect(mockCreateEmptyCart).toHaveBeenCalledWith(user.getId());
 });
 
