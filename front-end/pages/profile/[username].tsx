@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import useSWR from "swr";
 import Header from "@components/header";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -7,60 +8,79 @@ import AddressService from "@services/AddressService";
 import { User, Address } from "@types";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { GetStaticProps } from "next";
+
+const fetcher = async (url: string) => {
+  const storedUser = localStorage.getItem("loggedInUser");
+  if (!storedUser) {
+    throw new Error("User not authenticated");
+  }
+
+  const { token } = JSON.parse(storedUser);
+  const response = await fetch(`http://localhost:3000${url}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return response.json();
+};
+
+const useInterval = (callback: () => void, delay: number) => {
+  useEffect(() => {
+    const interval = setInterval(callback, delay);
+    return () => clearInterval(interval);
+  }, [callback, delay]);
+};
 
 const UserByUsername = () => {
   const { t } = useTranslation();
-  const [user, setUser] = useState<User | null>(null);
-  const [address, setAddress] = useState<Address>({
-    street: "",
-    city: "",
-    state: "",
-    zip: "",
-  });
   const [isEditing, setIsEditing] = useState(false);
-
   const router = useRouter();
   const { username } = router.query;
 
-  const getUserByUsername = async () => {
-    const user = await UserService.getUserByUsername(username as string);
-    setUser(user);
-  };
+  const { data: user, mutate: mutateUser } = useSWR(
+    username ? `/users/username/${username}` : null,
+    fetcher
+  );
 
-  const getAddressByUsername = async () => {
-    const address = await AddressService.getAddressByUsername(
-      username as string
-    );
-    setAddress(address);
-  };
+  const { data: address, mutate: mutateAddress } = useSWR(
+    username ? `/address/${username}` : null,
+    fetcher
+  );
+
+  useInterval(() => {
+    mutateUser();
+    mutateAddress();
+  }, 5000); // Poll every 5 seconds
 
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setAddress((prev) => (prev ? { ...prev, [name]: value } : null));
+    mutateAddress((prev) => (prev ? { ...prev, [name]: value } : null), false);
   };
 
   const handleSaveAddress = async () => {
     if (address) {
-      console.log("Saving address:", address); // Add this line to log the address being saved
+      console.log("Saving address:", address);
       try {
         await AddressService.updateAddressByUsername(
           username as string,
           address
         );
         setIsEditing(false);
-        console.log("Address saved successfully"); // Add this line to log success
+        console.log("Address saved successfully");
       } catch (error) {
-        console.error("Failed to save address:", error); // Add this line to log any errors
+        console.error("Failed to save address:", error);
       }
     }
   };
 
-  useEffect(() => {
-    if (username) {
-      getUserByUsername();
-      getAddressByUsername();
-    }
-  }, [username]);
+  if (!user || !address) return <div>Loading...</div>;
 
   return (
     <>
@@ -164,9 +184,9 @@ const UserByUsername = () => {
   );
 };
 
-export const getServerSideProps = async ({ locale }) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["common"])),
+    ...(await serverSideTranslations(locale, ["common", "profile"])),
   },
 });
 
