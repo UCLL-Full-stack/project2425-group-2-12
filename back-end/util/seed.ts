@@ -56,28 +56,28 @@ const main = async () => {
 
     const product1 = await prisma.product.create({
         data: {
-            name: 'Product 1',
-            price: 29.99,
+            name: 'Draagbare Radio',
+            price: 49.95,
             image: '/images/product1.png',
-            description: 'Description for Product 1',
+            description: 'Altijd Bereid in Nood – Kies de Noodradio Rood',
         },
     });
 
     const product2 = await prisma.product.create({
         data: {
-            name: 'Product 2',
-            price: 49.99,
+            name: 'Kinderbed',
+            price: 477.95,
             image: '/images/product2.png',
-            description: 'Description for Product 2',
+            description: 'stijlvol kinderbed met opbergruimte',
         },
     });
 
     const product3 = await prisma.product.create({
         data: {
-            name: 'Product 3',
-            price: 19.99,
+            name: 'Haribo Bananas',
+            price: 8.69,
             image: '/images/product3.png',
-            description: 'Description for Product 3',
+            description: 'Van deze bananen blijft niet eens de schil over!',
         },
     });
 
