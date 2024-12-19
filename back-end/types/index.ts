@@ -1,4 +1,8 @@
-type Role = 'admin' | 'customer' | 'guest';
+export enum Role {
+    ADMIN = 'admin',
+    CUSTOMER = 'customer',
+    GUEST = 'guest',
+}
 
 type UserInput = {
     id?: number;
@@ -25,4 +29,4 @@ type AuthenticationResponse = {
     role: string;
 };
 
-export { Role, UserInput, ProductInput, AuthenticationResponse };
+export { UserInput, ProductInput, AuthenticationResponse };

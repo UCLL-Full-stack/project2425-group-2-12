@@ -7,18 +7,37 @@ export class Product {
     private image: string;
     private description: string;
 
-    constructor(product: {
+    constructor({
+        id,
+        name,
+        price,
+        image,
+        description,
+    }: {
         id?: number;
         name: string;
         price: number;
         image: string;
         description: string;
     }) {
-        this.id = product.id;
-        this.name = product.name;
-        this.price = product.price;
-        this.image = product.image;
-        this.description = product.description;
+        if (!name) {
+            throw new Error('Name is required');
+        }
+        if (isNaN(price)) {
+            throw new Error('Price is required');
+        }
+        if (!image) {
+            throw new Error('Image is required');
+        }
+        if (!description) {
+            throw new Error('Description is required');
+        }
+
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.image = image;
+        this.description = description;
     }
 
     getId(): number | undefined {

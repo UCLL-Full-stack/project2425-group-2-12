@@ -75,6 +75,12 @@ const updateProduct = async (id: number, product: Partial<Product>): Promise<Pro
 
 const deleteProduct = async (id: number): Promise<void> => {
     try {
+        // Delete associated CartProduct records first
+        await database.cartProduct.deleteMany({
+            where: { productId: id },
+        });
+
+        // Then delete the product
         await database.product.delete({
             where: { id },
         });
