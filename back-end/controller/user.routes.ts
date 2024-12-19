@@ -139,11 +139,11 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
         if (error instanceof Error) {
             if (error.message === 'Incorrect password.') {
                 res.status(401).json({ message: 'Invalid username or password' });
+            } else if (error.message === 'User not found.') {
+                res.status(401).json({ message: 'Invalid username or password' });
             } else {
-                next(error);
+                next(new Error('An unknown error occurred'));
             }
-        } else {
-            next(new Error('An unknown error occurred'));
         }
     }
 });

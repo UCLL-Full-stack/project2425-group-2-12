@@ -18,7 +18,7 @@ const getAllUsers = async (): Promise<User[]> => {
 const getUserByUsername = async ({ username }: { username: string }): Promise<User> => {
     const user = await userDB.getUserByUsername({ username });
     if (!user) {
-        throw new Error(`User with username: ${username} does not exist.`);
+        throw new Error(`User not found.`);
     }
     return user;
 };
@@ -33,6 +33,7 @@ const authenticate = async ({ username, password }: UserInput): Promise<Authenti
     const isValidPassword = await bcrypt.compare(password, user.getPassword());
 
     if (!isValidPassword) {
+        console.log('Incorrect password.');
         throw new Error('Incorrect password.');
     }
     return {
