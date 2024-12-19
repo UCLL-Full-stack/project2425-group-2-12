@@ -12,16 +12,19 @@ const Home: React.FC = () => {
   const { t } = useTranslation();
   const [products, setProducts] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [error, setError] = useState<string>();
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      try {
-        const data = await ProductService.getProducts();
-        console.log(data);
-        setProducts(data);
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
+      setError("");
+      const response = await ProductService.getProducts();
+      if (response.status === 401) {
+        setError(t("general.unauthorized"));
+      } else if (!response.ok) {
+        setError(response.statusText);
+      } else {
+        setProducts(await response.json());
       }
     };
 
@@ -45,7 +48,7 @@ const Home: React.FC = () => {
   const handleProductAdded = async () => {
     try {
       const data = await ProductService.getProducts();
-      setProducts(data);
+      setProducts(await data.json());
       setShowModal(false); // Close the modal
     } catch (error) {
       console.error("Failed to fetch products:", error);
@@ -72,6 +75,7 @@ const Home: React.FC = () => {
       <Header></Header>
       <main className="container mx-auto p-4">
         <h1 className="text-2xl font-bold mb-4">{t("home.title")}</h1>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
         {isAdmin && (
           <button
             onClick={handleAddProductClick}
