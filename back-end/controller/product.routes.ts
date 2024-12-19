@@ -1,3 +1,46 @@
+/**
+ * @swagger
+ *   components:
+ *    securitySchemes:
+ *     bearerAuth:
+ *      type: http
+ *      scheme: bearer
+ *      bearerFormat: JWT
+ *    schemas:
+ *      Product:
+ *          type: object
+ *          properties:
+ *            id:
+ *              type: number
+ *              format: int64
+ *            name:
+ *              type: string
+ *              description: Product name.
+ *            price:
+ *              type: number
+ *              format: int64
+ *            image:
+ *              type: string
+ *              description: Image URL.
+ *            description:
+ *              type: string
+ *              description: Product description.
+ *      ProductInput:
+ *          type: object
+ *          properties:
+ *            name:
+ *              type: string
+ *              description: Product name.
+ *            price:
+ *              type: number
+ *              description: price.
+ *            image:
+ *              type: string
+ *              description: Image URL.
+ *            description:
+ *              type: string
+ *              description: Product description.
+ */
 import express, { NextFunction, Request, Response } from 'express';
 import productService from '../service/product.service';
 import { ProductInput } from '../types';

@@ -59,7 +59,7 @@ cartRouter.get('/:username', async (req: Request, res: Response, next: NextFunct
  *             type: object
  *             properties:
  *               productId:
- *                 type: string
+ *                 type: integer
  *               quantity:
  *                 type: integer
  *     responses:

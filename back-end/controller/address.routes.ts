@@ -1,6 +1,39 @@
+/**
+ * @swagger
+ *   components:
+ *    securitySchemes:
+ *     bearerAuth:
+ *      type: http
+ *      scheme: bearer
+ *      bearerFormat: JWT
+ *    schemas:
+ *     Address:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: number
+ *           format: int64
+ *         street:
+ *           type: string
+ *           description: Street name
+ *         house:
+ *           type: string
+ *           description: House number
+ *         postalCode:
+ *           type: string
+ *           description: Postal code
+ *         city:
+ *           type: string
+ *           description: City
+ *         country:
+ *           type: string
+ *           description: Country
+ *         userId:
+ *           type: number
+ *           format: int64
+ */
 import express, { Request, Response, NextFunction } from 'express';
 import addressService from '../service/address.service';
-import { Address } from '../model/address';
 
 const addressRouter = express.Router();
 
