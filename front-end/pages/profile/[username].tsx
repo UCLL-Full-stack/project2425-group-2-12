@@ -3,12 +3,10 @@ import useSWR from "swr";
 import Header from "@components/header";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import UserService from "@services/UserService";
 import AddressService from "@services/AddressService";
-import { User, Address } from "@types";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 
 const fetcher = async (url: string) => {
   const storedUser = localStorage.getItem("loggedInUser");
@@ -91,27 +89,49 @@ const UserByUsername = () => {
       <main className="p-6 min-h-screen flex flex-col items-center">
         {user ? (
           <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
-            <h1 className="text-2xl font-bold mb-4">
-              {t("profile.title", { username: user.username })}
-            </h1>
-            <p>
-              <strong>{t("profile.fullname")}:</strong>{" "}
-              {user.firstName + " " + user.lastName}
-            </p>
-            <p>
-              <strong>{t("profile.email")}:</strong> {user.email}
-            </p>
-            <p>
-              <strong>{t("profile.role")}:</strong> {user.role}
-            </p>
+            <div className="mb-4">
+              <h1 className="text-2xl font-bold mb-4">
+                {t("profile.title", { username: user.username })}
+              </h1>
+              <p>
+                <strong>{t("profile.fullname")}:</strong>{" "}
+                {user.firstName + " " + user.lastName}
+              </p>
+              <p>
+                <strong>{t("profile.email")}:</strong> {user.email}
+              </p>
+            </div>
             {isEditing ? (
               <div>
+                <h1 className="text-2xl font-bold mb-4">
+                  {t("profile.address")}
+                </h1>
                 <label>
                   {t("profile.street")}:
                   <input
                     type="text"
                     name="street"
                     value={address.street}
+                    onChange={handleAddressChange}
+                    className="border rounded p-2 w-full mb-4"
+                  />
+                </label>
+                <label>
+                  {t("profile.house")}:
+                  <input
+                    type="text"
+                    name="house"
+                    value={address.house}
+                    onChange={handleAddressChange}
+                    className="border rounded p-2 w-full mb-4"
+                  />
+                </label>
+                <label>
+                  {t("profile.postalCode")}:
+                  <input
+                    type="text"
+                    name="postalCode"
+                    value={address.postalCode}
                     onChange={handleAddressChange}
                     className="border rounded p-2 w-full mb-4"
                   />
@@ -127,21 +147,11 @@ const UserByUsername = () => {
                   />
                 </label>
                 <label>
-                  {t("profile.state")}:
+                  {t("profile.country")}:
                   <input
                     type="text"
-                    name="state"
-                    value={address.state}
-                    onChange={handleAddressChange}
-                    className="border rounded p-2 w-full mb-4"
-                  />
-                </label>
-                <label>
-                  {t("profile.zip")}:
-                  <input
-                    type="text"
-                    name="zip"
-                    value={address.zip}
+                    name="country"
+                    value={address.country}
                     onChange={handleAddressChange}
                     className="border rounded p-2 w-full mb-4"
                   />
@@ -155,17 +165,20 @@ const UserByUsername = () => {
               </div>
             ) : (
               <div>
+                <h1 className="text-2xl font-bold mb-4">
+                  {t("profile.address")}
+                </h1>
                 <p>
-                  <strong>{t("profile.street")}:</strong> {address.street}
+                  <strong>{t("profile.street")}:</strong>{" "}
+                  {address.street + " " + address.house}
+                </p>
+                <p></p>
+                <p>
+                  <strong>{t("profile.city")}:</strong>{" "}
+                  {address.postalCode + " " + address.city}
                 </p>
                 <p>
-                  <strong>{t("profile.city")}:</strong> {address.city}
-                </p>
-                <p>
-                  <strong>{t("profile.state")}:</strong> {address.state}
-                </p>
-                <p>
-                  <strong>{t("profile.zip")}:</strong> {address.zip}
+                  <strong>{t("profile.country")}:</strong> {address.country}
                 </p>
                 <button
                   onClick={() => setIsEditing(true)}
