@@ -6,8 +6,12 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import CartItem from "@components/cart/CartItem";
 import CartService from "@services/CartService";
 
+const calculateTotalPrice = (items) => {
+  return items.reduce((total, item) => total + item.price * item.quantity, 0);
+};
+
 const Cart: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("common");
   const [cartItems, setCartItems] = useState<any[]>([]);
 
   useEffect(() => {
@@ -41,7 +45,7 @@ const Cart: React.FC = () => {
     }
   };
 
-  const totalPrice = cartItems.reduce((total, item) => total + item.price, 0);
+  const totalPrice = calculateTotalPrice(cartItems);
 
   return (
     <>
