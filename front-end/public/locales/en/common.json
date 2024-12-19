@@ -45,6 +45,14 @@
     "title": "Profile of {{username}}",
     "fullname": "Full Name",
     "email": "Email",
-    "role": "Role"
+    "role": "Role",
+    "address": "Address",
+    "street": "Street",
+    "city": "City",
+    "state": "State",
+    "zip": "ZIP Code",
+    "save": "Save",
+    "edit": "Edit",
+    "loading": "Loading profile..."
   }
 }

@@ -9,6 +9,7 @@ import { userRouter } from './controller/user.routes';
 import { productRouter } from './controller/product.routes'; // Import productRouter
 import { cartRouter } from './controller/cart.routes'; // Import cartRouter
 import helmet from 'helmet';
+import { addressRouter } from './controller/address.routes';
 
 dotenv.config();
 const app = express();
@@ -32,6 +33,7 @@ app.use(
             '/products',
             /^\/cart\/.*/,
             '/profile',
+            /^\/address\/.*/,
         ],
     })
 );
@@ -39,6 +41,7 @@ app.use(
 app.use('/users', userRouter);
 app.use('/products', productRouter);
 app.use('/cart', cartRouter);
+app.use('/address', addressRouter);
 
 app.get('/status', (req, res) => {
     res.json({ message: 'Courses API is running...' });

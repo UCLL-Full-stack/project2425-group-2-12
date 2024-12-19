@@ -81,6 +81,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import userService from '../service/user.service';
 import { UserInput } from '../types/index';
+import { Address } from '../model/address';
 
 const userRouter = express.Router();
 
@@ -168,7 +169,17 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
  */
 userRouter.post('/signup', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userInput = <UserInput>req.body;
+        const userInput = <
+            UserInput & {
+                address: {
+                    street: string;
+                    house: string;
+                    postalCode: string;
+                    city: string;
+                    country: string;
+                };
+            }
+        >req.body;
         const user = await userService.createUser(userInput);
         res.status(200).json(user);
     } catch (error) {

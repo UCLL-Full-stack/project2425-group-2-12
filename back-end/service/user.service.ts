@@ -1,9 +1,11 @@
 import bcrypt from 'bcrypt';
 import userDB from '../repository/user.db';
 import cartDB from '../repository/cart.db'; // Import cartDB
+import addressDB from '../repository/address.db'; // Import addressDB
 import { AuthenticationResponse, UserInput } from '../types';
 import { generateJwtToken } from '../util/jwt';
 import { User } from '../model/user';
+import { Address } from '../model/address';
 
 const getAllUsers = async (): Promise<User[]> => {
     const users = await userDB.getAllUsers();
@@ -48,7 +50,10 @@ const createUser = async ({
     lastName,
     email,
     role,
-}: UserInput): Promise<User> => {
+    address,
+}: UserInput & {
+    address: { street: string; house: string; postalCode: string; city: string; country: string };
+}): Promise<User> => {
     const existingUser = await userDB.getUserByUsername({ username });
 
     if (existingUser) {
@@ -59,6 +64,9 @@ const createUser = async ({
     const user = new User({ username, password: hashedPassword, firstName, lastName, email, role });
 
     const createdUser = await userDB.createUser(user);
+
+    // Create an address for the new user
+    await addressDB.createAddress(new Address({ ...address, userId: createdUser.getId()! }));
 
     // Create an empty cart for the new user
     await cartDB.createEmptyCart(createdUser.getId()!);

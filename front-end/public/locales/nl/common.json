@@ -45,6 +45,14 @@
     "title": "Profiel van {{username}}",
     "fullname": "Volledige naam",
     "email": "E-mail",
-    "role": "Rol"
+    "role": "Rol",
+    "address": "Adres",
+    "street": "Straat",
+    "city": "Stad",
+    "state": "Staat",
+    "zip": "Postcode",
+    "save": "Opslaan",
+    "edit": "Bewerken",
+    "loading": "Profiel laden..."
   }
 }

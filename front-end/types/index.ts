@@ -1,3 +1,10 @@
+export type Address = {
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+};
+
 export type User = {
   firstName?: string;
   lastName?: string;
@@ -6,6 +13,7 @@ export type User = {
   username?: string;
   password?: string;
   role?: string;
+  address?: Address;
 };
 
 export type Student = {

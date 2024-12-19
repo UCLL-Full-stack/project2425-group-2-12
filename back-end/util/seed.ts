@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 const main = async () => {
     await prisma.cartProduct.deleteMany();
     await prisma.cart.deleteMany();
+    await prisma.address.deleteMany();
     await prisma.user.deleteMany();
     await prisma.product.deleteMany();
 
@@ -27,7 +28,29 @@ const main = async () => {
             firstName: 'user',
             lastName: 'user',
             email: 'user@ucll.be',
-            role: 'user',
+            role: 'customer',
+        },
+    });
+
+    await prisma.address.create({
+        data: {
+            street: 'Admin Street',
+            house: '1A',
+            postalCode: '12345',
+            city: 'Admin City',
+            country: 'Admin Country',
+            userId: admin.id,
+        },
+    });
+
+    await prisma.address.create({
+        data: {
+            street: 'User Street',
+            house: '2B',
+            postalCode: '67890',
+            city: 'User City',
+            country: 'User Country',
+            userId: user.id,
         },
     });
 
