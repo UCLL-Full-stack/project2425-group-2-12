@@ -4,22 +4,39 @@ export enum Role {
     GUEST = 'guest',
 }
 
-type UserInput = {
-    id?: number;
+export type UserInput = {
     username: string;
     password: string;
     firstName: string;
     lastName: string;
     email: string;
     role: Role;
+    address: AddressDTO;
 };
 
-type ProductInput = {
-    id?: number;
+export type Address = {
+    street: string;
+    house: string;
+    postalCode: string;
+    city: string;
+    country: string;
+};
+
+export type ProductInput = {
     name: string;
     price: number;
     image: string;
     description: string;
+};
+
+export type CartItem = {
+    productId: number;
+    quantity: number;
+};
+
+export type AuthenticationRequest = {
+    username: string;
+    password: string;
 };
 
 type AuthenticationResponse = {
@@ -29,4 +46,11 @@ type AuthenticationResponse = {
     role: string;
 };
 
-export { UserInput, ProductInput, AuthenticationResponse };
+export {
+    UserInput,
+    Address,
+    ProductInput,
+    CartItem,
+    AuthenticationRequest,
+    AuthenticationResponse,
+};
