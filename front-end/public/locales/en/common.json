@@ -29,7 +29,8 @@
   },
   "home": {
     "addProductButton": "Add product",
-    "title": "Our products:"
+    "title": "Our products:",
+    "login": "Login to see our products."
   },
   "product": {
     "addToCart": "Add to cart"
@@ -49,7 +50,7 @@
     "address": "Address",
     "street": "Street",
     "city": "City",
-    "state": "State",
+    "country": "Country",
     "zip": "ZIP Code",
     "save": "Save",
     "edit": "Edit",

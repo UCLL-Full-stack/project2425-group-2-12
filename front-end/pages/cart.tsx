@@ -73,7 +73,7 @@ const Cart: React.FC = () => {
       <Header />
       <main className="container mx-auto p-4">
         <h1 className="text-2xl font-bold mb-4">{t("cart.title")}</h1>
-        {error && <div className="text-red-800">{error}</div>}
+        {error && <div className="text-red-500">{error}</div>}
         {cartItems.length === 0 ? (
           <p>{t("cart.empty")}</p>
         ) : (

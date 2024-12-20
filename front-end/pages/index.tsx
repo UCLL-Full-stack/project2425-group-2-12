@@ -20,7 +20,7 @@ const Home: React.FC = () => {
       setError("");
       const response = await ProductService.getProducts();
       if (response.status === 401) {
-        setError(t("general.unauthorized"));
+        setError(t("home.login"));
       } else if (!response.ok) {
         setError(response.statusText);
       } else {

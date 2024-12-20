@@ -29,7 +29,8 @@
   },
   "home": {
     "addProductButton": "Product toevoegen",
-    "title": "Onze producten:"
+    "title": "Onze producten:",
+    "login": "Log in om onze producten te zien."
   },
   "product": {
     "addToCart": "Toevoegen"
@@ -49,7 +50,7 @@
     "address": "Adres",
     "street": "Straat",
     "city": "Stad",
-    "state": "Staat",
+    "country": "Land",
     "zip": "Postcode",
     "save": "Opslaan",
     "edit": "Bewerken",
